@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:electronic_scale/core/services/api_provider.dart';
+import 'package:electronic_scale/core/services/permission_service.dart';
 import 'package:electronic_scale/features/auth/data/repositories/auth_repository.dart';
 import 'package:electronic_scale/features/auth/data/models/auth.dart';
 
@@ -23,12 +24,21 @@ class AuthNotifier extends _$AuthNotifier {
 
     try {
       final repository = ref.read(authRepositoryProvider);
-      final token = await repository.login(username, password);
+      final loginResponse = await repository.login(username, password);
 
       // Lưu token vào API service
-      ref.read(apiServiceProvider).setToken(token);
+      ref.read(apiServiceProvider).setToken(loginResponse.token);
 
-      state = AuthState.authenticated(token);
+      // Lưu permissions vào CurrentPermissions provider
+      ref
+          .read(currentPermissionsProvider.notifier)
+          .setPermissions(loginResponse.permissions);
+
+      // Cập nhật auth state
+      state = AuthState.authenticated(
+        token: loginResponse.token,
+        permissions: loginResponse.permissions,
+      );
     } catch (e) {
       state = AuthState.error(e.toString());
     }
@@ -37,6 +47,10 @@ class AuthNotifier extends _$AuthNotifier {
   Future<void> logout() async {
     final repository = ref.read(authRepositoryProvider);
     await repository.logout();
+
+    // Xóa permissions
+    ref.read(currentPermissionsProvider.notifier).clearPermissions();
+
     state = const AuthState.unauthenticated();
   }
 }

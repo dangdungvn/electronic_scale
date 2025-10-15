@@ -21,8 +21,15 @@ Map<String, dynamic> _$$LoginRequestImplToJson(_$LoginRequestImpl instance) =>
 _$LoginResponseImpl _$$LoginResponseImplFromJson(Map<String, dynamic> json) =>
     _$LoginResponseImpl(
       token: json['token'] as String,
+      permissions: UserPermissions.fromJson(
+        json['permissions'] as Map<String, dynamic>,
+      ),
       message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$$LoginResponseImplToJson(_$LoginResponseImpl instance) =>
-    <String, dynamic>{'token': instance.token, 'message': instance.message};
+    <String, dynamic>{
+      'token': instance.token,
+      'permissions': instance.permissions,
+      'message': instance.message,
+    };

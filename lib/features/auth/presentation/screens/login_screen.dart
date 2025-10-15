@@ -23,7 +23,7 @@ class ModernLoginScreen extends HookConsumerWidget {
       next.when(
         initial: () {},
         loading: () {},
-        authenticated: (token) {
+        authenticated: (token, permissions) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('✓ Đăng nhập thành công!'),

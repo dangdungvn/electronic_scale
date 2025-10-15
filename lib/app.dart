@@ -1,3 +1,4 @@
+import 'package:electronic_scale/features/auth/presentation/screens/permissions_debug_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:electronic_scale/core/theme/app_theme.dart';
@@ -23,7 +24,7 @@ class ElectronicScaleApp extends ConsumerWidget {
         initial: () => const ModernLoginScreen(),
         loading: () =>
             const Scaffold(body: Center(child: CircularProgressIndicator())),
-        authenticated: (_) => const HomeScreen(),
+        authenticated: (token, permissions) => const PermissionsDebugScreen(),
         unauthenticated: () => const ModernLoginScreen(),
         error: (_) => const ModernLoginScreen(),
       ),

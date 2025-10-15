@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:electronic_scale/core/models/user_permissions.dart';
 
 part 'auth.freezed.dart';
 part 'auth.g.dart';
@@ -16,8 +17,11 @@ class LoginRequest with _$LoginRequest {
 
 @freezed
 class LoginResponse with _$LoginResponse {
-  const factory LoginResponse({required String token, String? message}) =
-      _LoginResponse;
+  const factory LoginResponse({
+    required String token,
+    required UserPermissions permissions,
+    String? message,
+  }) = _LoginResponse;
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);
@@ -27,7 +31,10 @@ class LoginResponse with _$LoginResponse {
 class AuthState with _$AuthState {
   const factory AuthState.initial() = AuthInitial;
   const factory AuthState.loading() = AuthLoading;
-  const factory AuthState.authenticated(String token) = AuthAuthenticated;
+  const factory AuthState.authenticated({
+    required String token,
+    required UserPermissions permissions,
+  }) = AuthAuthenticated;
   const factory AuthState.unauthenticated() = AuthUnauthenticated;
   const factory AuthState.error(String message) = AuthError;
 }
