@@ -12,8 +12,8 @@ class ModernLoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final usernameController = useTextEditingController(text: 'admin');
-    final passwordController = useTextEditingController(text: '123456');
+    final usernameController = useTextEditingController();
+    final passwordController = useTextEditingController();
     final isPasswordVisible = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final authState = ref.watch(authNotifierProvider);
@@ -459,6 +459,9 @@ class ModernLoginScreen extends HookConsumerWidget {
     String username,
     String password,
   ) {
+    // Ẩn bàn phím trước khi đăng nhập
+    FocusScope.of(context).unfocus();
+
     ref.read(authNotifierProvider.notifier).login(username, password);
   }
 }
